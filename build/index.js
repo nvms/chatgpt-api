@@ -1,14 +1,12 @@
 // src/chatgpt-api.ts
-import Keyv from "keyv";
 import pTimeout from "p-timeout";
-import QuickLRU from "quick-lru";
 import { v4 as uuidv4 } from "uuid";
 
 // src/tokenizer.ts
 import { getEncoding } from "js-tiktoken";
 var tokenizer = getEncoding("cl100k_base");
 function encode(input) {
-  return tokenizer.encode(input);
+  return new Uint32Array(tokenizer.encode(input));
 }
 
 // src/types.ts
@@ -123,6 +121,7 @@ var ChatGPTAPI = class {
    * @param fetch - Optional override for the `fetch` implementation to use. Defaults to the global `fetch` function.
    */
   constructor(opts) {
+    this._messageStore = /* @__PURE__ */ new Map();
     const {
       apiKey,
       apiOrg,
@@ -163,9 +162,7 @@ Current date: ${currentDate}`;
     if (messageStore) {
       this._messageStore = messageStore;
     } else {
-      this._messageStore = new Keyv({
-        store: new QuickLRU({ maxSize: 1e4 })
-      });
+      this._messageStore = /* @__PURE__ */ new Map();
     }
     if (!this._apiKey) {
       throw new Error("OpenAI missing required apiKey");

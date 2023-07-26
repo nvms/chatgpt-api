@@ -31,7 +31,7 @@ export class ChatGPTAPI {
   protected _getMessageById: types.GetMessageByIdFunction
   protected _upsertMessage: types.UpsertMessageFunction
 
-  protected _messageStore: Keyv<types.ChatMessage>
+  protected _messageStore: Map<string, types.ChatMessage> = new Map()
 
   /**
    * Creates a new client wrapper around OpenAI's chat completion API, mimicing the official ChatGPT webapp's functionality as closely as possible.
@@ -94,9 +94,10 @@ export class ChatGPTAPI {
     if (messageStore) {
       this._messageStore = messageStore
     } else {
-      this._messageStore = new Keyv<types.ChatMessage, any>({
-        store: new QuickLRU<string, types.ChatMessage>({ maxSize: 10000 })
-      })
+      /* this._messageStore = new Keyv<types.ChatMessage, any>({ */
+      /*   store: new QuickLRU<string, types.ChatMessage>({ maxSize: 10000 }) */
+      /* }) */
+      this._messageStore = new Map()
     }
 
     if (!this._apiKey) {

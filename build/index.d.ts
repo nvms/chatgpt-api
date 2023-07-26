@@ -1,5 +1,3 @@
-import Keyv from 'keyv';
-
 type Role = 'user' | 'assistant' | 'system';
 type FetchFn = typeof fetch;
 type ChatGPTAPIOptions = {
@@ -15,7 +13,7 @@ type ChatGPTAPIOptions = {
     maxModelTokens?: number;
     /** @defaultValue `1000` **/
     maxResponseTokens?: number;
-    messageStore?: Keyv;
+    messageStore?: Map<string, any>;
     getMessageById?: GetMessageByIdFunction;
     upsertMessage?: UpsertMessageFunction;
     fetch?: FetchFn;
@@ -406,7 +404,7 @@ declare class ChatGPTAPI {
     protected _fetch: FetchFn;
     protected _getMessageById: GetMessageByIdFunction;
     protected _upsertMessage: UpsertMessageFunction;
-    protected _messageStore: Keyv<ChatMessage>;
+    protected _messageStore: Map<string, ChatMessage>;
     /**
      * Creates a new client wrapper around OpenAI's chat completion API, mimicing the official ChatGPT webapp's functionality as closely as possible.
      *

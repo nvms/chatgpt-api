@@ -27,7 +27,7 @@ export type ChatGPTAPIOptions = {
   /** @defaultValue `1000` **/
   maxResponseTokens?: number
 
-  messageStore?: Keyv
+  messageStore?: Map<string, any>
   getMessageById?: GetMessageByIdFunction
   upsertMessage?: UpsertMessageFunction
 
